@@ -1,0 +1,8 @@
+{
+  "name": "mais-bonus-mobile-frontend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "eb06d3c9"
+}
