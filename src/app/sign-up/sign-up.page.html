@@ -1,0 +1,127 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="back()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastrar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Cadastrar</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <form [formGroup]="form">
+
+      <ion-list>
+        <ion-radio-group name="userType" formControlName="userType" value="customer" (ngModelChange)="updateFormControls()">
+          <ion-list-header>
+            <ion-label>Você é um(a)</ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-radio value="customer">Cliente</ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-radio value="company">Empresa</ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+
+      <ion-item>
+        <ion-input label="Nome" labelPlacement="floating" required name="name" formControlName="name" type="text"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.name">
+          <div class="error-message" *ngIf="form.get('name')?.hasError(validation.type) && (form.get('name')?.dirty || form.get('name')?.touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-input label="E-mail" labelPlacement="floating" required name="email" formControlName="email" type="email"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.email">
+          <div class="error-message" *ngIf="form.get('email')?.hasError(validation.type) && (form.get('email')?.dirty || form.get('email')?.touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-input label="Telefone" labelPlacement="floating" required name="phone" formControlName="phone" type="tel" [maskito]="phoneMask" [maskitoElement]="maskPredicate"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.phone">
+          <div class="error-message" *ngIf="form.get('phone')?.hasError(validation.type) && (form.get('phone')?.dirty || form.get('phone')?.touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item *ngIf="form.get('userType')?.value === 'company'">
+        <ion-input label="CNPJ" labelPlacement="floating" required name="cnpj" formControlName="cnpj" type="text" [maskito]="cnpjMask" [maskitoElement]="maskPredicate"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.cnpj">
+          <div class="error-message" *ngIf="form.get('cnpj')?.hasError(validation.type) && (form.get('cnpj')?.dirty || form.get('cnpj')?.touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item *ngIf="form.get('userType')?.value === 'customer'">
+        <ion-input label="CPF" labelPlacement="floating" required name="cpf" formControlName="cpf" type="text" [maskito]="cpfMask" [maskitoElement]="maskPredicate"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.cpf">
+          <div class="error-message" *ngIf="form.get('cpf')?.hasError(validation.type) && (form.get('cpf')?.dirty || form.get('cpf')?.touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-input label="Senha" labelPlacement="floating" required name="password" formControlName="password" type="password"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.password">
+          <div
+            *ngIf="form.get('password')?.hasError(validation.type) && (form.get('password')?.dirty || form.get('password')?.touched)"
+            class="error-message"
+            >
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-input label="Repetir senha" labelPlacement="floating" required name="repeatPassword" formControlName="repeatPassword" type="password"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.repeatPassword">
+          <div
+            *ngIf="form.hasError(validation.type) || form.get('repeatPassword')?.hasError(validation.type) && (form.get('repeatPassword')?.dirty || form.get('repeatPassword')?.touched)"
+            class="error-message"
+            >
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-button
+        [disabled]="!form.valid"
+         expand="block" color="primary" type="submit"
+         (click)="onSubmit()"
+         >
+        Enviar
+      </ion-button>
+    </form>
+
+  </ion-content>
+</ion-content>
