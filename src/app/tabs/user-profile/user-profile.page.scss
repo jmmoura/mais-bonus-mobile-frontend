@@ -1,0 +1,17 @@
+.avatar-div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+ion-avatar {
+  margin: 1rem;
+  height: 5rem;
+  width: 5rem;
+}
+
+.validation-errors {
+  color: var(--ion-color-danger);
+  font-size: small;
+}

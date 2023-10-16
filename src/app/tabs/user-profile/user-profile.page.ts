@@ -1,86 +1,57 @@
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { FormUtilsService } from './../../shared/form/form-utils.service';
+import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { MaskitoElementPredicateAsync, MaskitoOptions } from '@maskito/core';
 import { maskitoPhoneOptionsGenerator } from '@maskito/phone';
 import metadata from 'libphonenumber-js/min/metadata';
 
-import { CustomValidator } from './customValidator';
-import { FormUtilsService } from '../shared/form/form-utils.service';
-
 @Component({
-  selector: 'app-sign-up',
-  templateUrl: './sign-up.page.html',
-  styleUrls: ['./sign-up.page.scss'],
+  selector: 'app-tab-user-profile',
+  templateUrl: 'user-profile.page.html',
+  styleUrls: ['user-profile.page.scss']
 })
-export class SignUpPage implements OnInit {
+export class UserProfilePage {
   readonly cpfMask: MaskitoOptions = this.formUtilsService.getCpfMask();
   readonly cnpjMask: MaskitoOptions = this.formUtilsService.getCnpjMask();
   readonly phoneMask: MaskitoOptions = maskitoPhoneOptionsGenerator({countryIsoCode: "BR", metadata});
   readonly maskPredicate: MaskitoElementPredicateAsync = async (el) => (el as HTMLIonInputElement).getInputElement();
 
-  form: FormGroup;
+  userDataForm: FormGroup;
+  newPasswordForm: FormGroup;
   validationMessages = this.formUtilsService.getValidationMessages();
 
   constructor(private router: Router,
     private formBuilder: NonNullableFormBuilder,
-    private location: Location,
     private formUtilsService: FormUtilsService
     ) {
 
-    this.form = this.initializeValidations();
-    this.updateFormControls();
+    this.userDataForm = this.initializeUserDataValidations();
+    this.newPasswordForm = this.initializeNewPasswordValidations();
 
-  }
-
-  get cnpj(): AbstractControl | null {
-    return this.form.get('cnpj');
-  }
-
-  get cpf(): AbstractControl | null {
-    return this.form.get('cpf');
-  }
-
-  ngOnInit() {
   }
 
   onSubmit() {
     this.router.navigate(['/tabs']);
   }
 
-  back() {
-    this.location.back();
-  }
-
-  updateFormControls(): void {
-    if (this.form.get('userType')?.value === 'company') {
-      this.cnpj?.enable();
-      this.cpf?.disable();
-    } else {
-      this.cnpj?.disable();
-      this.cpf?.enable();
-    }
-  }
-
-  private initializeValidations(): FormGroup<any> {
+  private initializeUserDataValidations(): FormGroup<any> {
     return this.formBuilder.group({
       userType: new FormControl("customer", Validators.required),
-      name: new FormControl("", Validators.required),
+      name: new FormControl({value: 'Josiel', disabled: true}),
       email: new FormControl("", Validators.compose([
         Validators.required,
         Validators.email
       ])),
       phone: new FormControl("", Validators.required),
-      cnpj: new FormControl("", Validators.compose([
-        Validators.required,
-        CustomValidator.isValidCnpj
-      ])),
-      cpf: new FormControl("", Validators.compose([
-        Validators.required,
-        CustomValidator.isValidCpf
-      ])),
+      cnpj: new FormControl({value: '', disabled: true}),
+      cpf: new FormControl({value: '02150304007', disabled: true})
+    });
+  }
+
+  private initializeNewPasswordValidations(): FormGroup<any> {
+    return this.formBuilder.group({
       password: new FormControl("", Validators.compose([
         Validators.required,
         Validators.minLength(8),
