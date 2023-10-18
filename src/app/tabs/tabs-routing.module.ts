@@ -1,3 +1,4 @@
+import { AbstractControl } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
@@ -12,8 +13,8 @@ const routes: Routes = [
         loadChildren: () => import('./wallet/wallet.module').then(m => m.WalletPageModule)
       },
       {
-        path: 'home',
-        loadChildren: () => import('./tab2/tab2.module').then(m => m.Tab2PageModule)
+        path: 'cashback',
+        loadChildren: () => import('./cashback/cashback.module').then(m => m.CashbackPageModule)
       },
       {
         path: 'user-profile',

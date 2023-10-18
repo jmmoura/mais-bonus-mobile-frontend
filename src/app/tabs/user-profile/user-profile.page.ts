@@ -38,7 +38,7 @@ export class UserProfilePage {
 
   private initializeUserDataValidations(): FormGroup<any> {
     return this.formBuilder.group({
-      userType: new FormControl("customer", Validators.required),
+      userType: new FormControl("company", Validators.required),
       name: new FormControl({value: 'Josiel', disabled: true}),
       email: new FormControl("", Validators.compose([
         Validators.required,
@@ -46,7 +46,10 @@ export class UserProfilePage {
       ])),
       phone: new FormControl("", Validators.required),
       cnpj: new FormControl({value: '', disabled: true}),
-      cpf: new FormControl({value: '02150304007', disabled: true})
+      cpf: new FormControl({value: '02150304007', disabled: true}),
+      companies: new FormControl("", Validators.compose([
+        Validators.required
+      ])),
     });
   }
 
