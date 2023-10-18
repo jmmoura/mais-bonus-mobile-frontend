@@ -86,6 +86,19 @@
         </ng-container>
       </div>
 
+      <ion-item *ngIf="form.get('userType')?.value === 'customer'">
+        <ion-select label="Empresa" label-placement="floating" formControlName="companies" required>
+          <ion-select-option *ngFor="let company of form.get('companies')?.value" [value]="company">{{ company.name }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.companies">
+          <div class="error-message" *ngIf="form.get('companies')?.hasError(validation.type) && (form.get('companies')?.dirty || form.get('companies')?.touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
       <ion-item>
         <ion-input label="Senha" labelPlacement="floating" required name="password" formControlName="password" type="password"></ion-input>
       </ion-item>
@@ -125,3 +138,4 @@
 
   </ion-content>
 </ion-content>
+s

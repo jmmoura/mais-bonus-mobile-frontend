@@ -28,6 +28,9 @@ export class FormUtilsService {
         { type: 'required', message: 'CPF é obrigatório.' },
         { type: 'invalidCpf', message: 'Formato de CPF inválido.' }
       ],
+      companies: [
+        { type: 'required', message: 'Empresa é obrigatório.' },
+      ],
       password: [
         { type: 'required', message: 'Senha é obrigatória.' },
         { type: 'minLength(8)', message: 'Senha deve ter no mínimo 8 caracteres.' },

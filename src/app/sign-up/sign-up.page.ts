@@ -81,6 +81,9 @@ export class SignUpPage implements OnInit {
         Validators.required,
         CustomValidator.isValidCpf
       ])),
+      companies: new FormControl("", Validators.compose([
+        Validators.required
+      ])),
       password: new FormControl("", Validators.compose([
         Validators.required,
         Validators.minLength(8),

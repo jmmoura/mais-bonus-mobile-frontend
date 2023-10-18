@@ -1,0 +1,52 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Carteira</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Carteira</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-item-group>
+
+      <ion-item>
+        <ion-label>Saldo de Cashback</ion-label>
+        <ion-text color="secondary">
+          <h1>R$ 20,00</h1>
+        </ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-buttons class="buttons">
+          <ion-button class="button" fill="solid" slot="start" color="tertiary" (click)="redeem()">
+            Resgatar
+          </ion-button>
+          <ion-button class="button" fill="solid" slot="end" color="primary" (click)="score()">
+            Pontuar
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+
+      <ion-item-divider>
+        <ion-label>Extrato</ion-label>
+      </ion-item-divider>
+
+      <ion-item *ngFor="let score of statement">
+        <ion-text class="date">{{ score.date | date:'short':'':'pt-BR' }}</ion-text>
+        <ion-text>
+          <ion-text>
+            <p>{{ score.description }}</p>
+          </ion-text>
+          <ion-text color="success">
+            <p color="success">{{ score.value | currency : 'BRL' }}</p>
+          </ion-text>
+        </ion-text>
+      </ion-item>
+    </ion-item-group>
+  </ion-content>
+</ion-content>

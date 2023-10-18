@@ -46,7 +46,7 @@ export class SignInPage implements OnInit {
 
   login(): void {
 
-    this.router.navigate([ '/tabs' ]);
+    this.router.navigate([ '/tabs/wallet' ]);
 
     // if (this.storageService.login(this.username, this.password)) {
     //   if (this.storageService.loggedIn.profile === Profile.ADMIN) {

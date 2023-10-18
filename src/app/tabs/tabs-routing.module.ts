@@ -8,29 +8,29 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
-        loadChildren: () => import('./tab1/tab1.module').then(m => m.Tab1PageModule)
+        path: 'wallet',
+        loadChildren: () => import('./wallet/wallet.module').then(m => m.WalletPageModule)
       },
       {
-        path: 'tab2',
+        path: 'home',
         loadChildren: () => import('./tab2/tab2.module').then(m => m.Tab2PageModule)
       },
       {
         path: 'user-profile',
         loadChildren: () => import('./user-profile/user-profile.module').then(m => m.UserProfilePageModule)
       },
-      {
-        path: '',
-        redirectTo: '/tabs/tab1',
-        pathMatch: 'full'
-      }
+      // {
+      //   path: '',
+      //   redirectTo: '/tabs/tab1',
+      //   pathMatch: 'full'
+      // }
     ]
   },
-  {
-    path: '',
-    redirectTo: '/tabs/tab1',
-    pathMatch: 'full'
-  }
+  // {
+  //   path: '',
+  //   redirectTo: '/tabs/tab1',
+  //   pathMatch: 'full'
+  // }
 ];
 
 @NgModule({
