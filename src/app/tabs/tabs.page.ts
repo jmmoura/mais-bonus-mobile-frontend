@@ -6,8 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['tabs.page.scss']
 })
 export class TabsPage {
-  userType: string = 'company';
-  // userType: string = 'customer';
+  // userType: string = 'company';
+  userType: string = 'customer';
 
   constructor() {}
 

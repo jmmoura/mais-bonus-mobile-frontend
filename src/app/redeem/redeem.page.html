@@ -1,0 +1,46 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="back()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Resgatar pontuação</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Resgatar pontuação</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title class="customer-id-title">Valor a ser resgatado:</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <form [formGroup]="form">
+
+          <ion-input class="amount-input" label="R$" placeholder="0,00" name="amount" formControlName="amount" required type="text" [maskito]="currencyMask" [maskitoElement]="maskPredicate"></ion-input>
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of messages.amount">
+              <div
+                *ngIf="form.hasError(validation.type) || form.get('amount')?.hasError(validation.type) && (form.get('amount')?.dirty || form.get('amount')?.touched)"
+                class="error-message"
+                >
+                {{ validation.message }}
+              </div>
+            </ng-container>
+          </div>
+
+          <ion-button [disabled]="!form.valid" expand="block" color="primary" type="submit" (click)="redeem()" expand="block">
+            Resgatar
+          </ion-button>
+
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </ion-content>
+
+</ion-content>

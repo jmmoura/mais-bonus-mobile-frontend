@@ -13,6 +13,18 @@ const routes: Routes = [
   {
     path: 'sign-up',
     loadChildren: () => import('./sign-up/sign-up.module').then( m => m.SignUpPageModule)
+  },
+  {
+    path: 'customer/score',
+    loadChildren: () => import('./score/score.module').then( m => m.ScorePageModule)
+  },
+  {
+    path: 'customer/redeem/:balance',
+    loadChildren: () => import('./redeem/redeem.module').then( m => m.RedeemPageModule)
+  },
+  {
+    path: 'customer/redeem/code/get',
+    loadChildren: () => import('./redeem-code/redeem-code.module').then( m => m.RedeemCodePageModule)
   }
 
 ];

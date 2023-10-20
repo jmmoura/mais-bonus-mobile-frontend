@@ -4,17 +4,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SignInPageRoutingModule } from './sign-in-routing.module';
-import { SignInPage } from './sign-in.page';
+import { RedeemPageRoutingModule } from './redeem-routing.module';
+
+import { RedeemPage } from './redeem.page';
+import { MaskitoModule } from '@maskito/angular';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SignInPageRoutingModule,
+    RedeemPageRoutingModule,
+    MaskitoModule,
     ReactiveFormsModule
   ],
-  declarations: [SignInPage]
+  declarations: [RedeemPage]
 })
-export class SignInPageModule {}
+export class RedeemPageModule {}

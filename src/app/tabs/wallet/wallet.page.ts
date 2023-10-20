@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 interface score {
   description: string;
@@ -12,11 +13,12 @@ interface score {
   styleUrls: ['./wallet.page.scss'],
 })
 export class WalletPage implements OnInit {
+  balance: number = 20.00;
   statement: score[] = [];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
-  ngOnInit() {
+  ngOnInit() {;
     this.statement = [
       {
         description: "Compra 1",
@@ -32,11 +34,11 @@ export class WalletPage implements OnInit {
   }
 
   redeem() {
-
+    this.router.navigate([ '/customer/redeem', this.balance ])
   }
 
   score() {
-
+    this.router.navigate([ '/customer/score' ])
   }
 
 }
