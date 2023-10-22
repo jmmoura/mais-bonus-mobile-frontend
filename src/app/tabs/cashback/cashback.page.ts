@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cashback',
@@ -7,13 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CashbackPage implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
   redeemClientScore() {
-
+    this.router.navigate([ 'company/redeem' ]);
   }
 
   scoreClient() {

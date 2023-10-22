@@ -25,7 +25,12 @@ const routes: Routes = [
   {
     path: 'customer/redeem/code/get',
     loadChildren: () => import('./redeem-code/redeem-code.module').then( m => m.RedeemCodePageModule)
+  },
+  {
+    path: 'company/redeem',
+    loadChildren: () => import('./redeem-company/redeem-company.module').then( m => m.RedeemCompanyPageModule)
   }
+
 
 ];
 @NgModule({

@@ -1,0 +1,51 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="back()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Resgate de Pontuação</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Resgate de Pontuação</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-card-content>
+    <form [formGroup]="form">
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Informe o código de resgate do fornecido pelo cliente</ion-card-subtitle>
+          <ion-card-title class="redeem-code-title">Código de Resgate</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-input class="code-input" aria-label="redeem-code" name="redeemCode" formControlName="redeemCode" placeholder="00000" required type="number" fill="outline"></ion-input>
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of messages.redeemCode">
+              <div
+                *ngIf="form.get('redeemCode')?.hasError(validation.type) && (form.get('redeemCode')?.dirty || form.get('redeemCode')?.touched)"
+                class="error-message"
+                >
+                {{ validation.message }}
+              </div>
+            </ng-container>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-button [disabled]="form.get('redeemCode')?.invalid"
+        expand="block" color="primary" type="submit"
+        (click)="redeem()"
+        >
+        Resgatar
+      </ion-button>
+
+    </form>
+  </ion-card-content>
+
+</ion-content>

@@ -26,15 +26,15 @@ export class RedeemPage implements OnInit {
     private formBuilder: NonNullableFormBuilder,
     private activatedRoute: ActivatedRoute
   ) {
+    
     this.balance = 0;
     this.activatedRoute.params.subscribe(params => {
       this.balance = params['balance'];
       this.form.controls['amount'].setValue(this.balance);
     });
+
     this.form = this.formBuilder.group({
-      amount: new FormControl("", Validators.compose([
-        Validators.required
-      ]))
+      amount: new FormControl("", Validators.required)
     }, {
       validators: (group: AbstractControl) => {
         const inputAmount = Number(group.get('amount')?.value.replace(",", "."));
