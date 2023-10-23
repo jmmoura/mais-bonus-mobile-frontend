@@ -17,12 +17,12 @@
   <ion-content>
     <ion-card>
       <ion-card-header>
-        <ion-card-title class="customer-id-title">Valor a ser resgatado:</ion-card-title>
+        <ion-card-title class="customer-id-title">Escolha o valor a ser resgatado:</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <form [formGroup]="form">
 
-          <ion-input class="amount-input" label="R$" placeholder="0,00" name="amount" formControlName="amount" required type="text" [maskito]="currencyMask" [maskitoElement]="maskPredicate"></ion-input>
+          <ion-input class="amount-input" label="R$" placeholder="0,00" name="amount" formControlName="amount" required type="text" fill="outline" [maskito]="currencyMask" [maskitoElement]="maskPredicate"></ion-input>
           <div class="validation-errors">
             <ng-container *ngFor="let validation of messages.amount">
               <div

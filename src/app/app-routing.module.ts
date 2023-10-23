@@ -29,9 +29,11 @@ const routes: Routes = [
   {
     path: 'company/redeem',
     loadChildren: () => import('./redeem-company/redeem-company.module').then( m => m.RedeemCompanyPageModule)
+  },
+  {
+    path: 'company/score',
+    loadChildren: () => import('./score-company/score-company.module').then( m => m.ScoreCompanyPageModule)
   }
-
-
 ];
 @NgModule({
   imports: [

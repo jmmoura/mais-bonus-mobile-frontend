@@ -18,7 +18,7 @@ export class CashbackPage implements OnInit {
   }
 
   scoreClient() {
-
+    this.router.navigate([ 'company/score' ]);
   }
 
 }

@@ -1,0 +1,78 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="back()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Adicionar pontuação</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Adicionar pontuação</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-card>
+      <ion-card-header>
+      </ion-card-header>
+      <ion-card-content>
+        <form [formGroup]="form">
+
+          <ion-label class="label">ID do cliente:</ion-label>
+          <ion-input class="input" aria-label="customer-id" placeholder="00000" name="customer-ID" formControlName="customerID" required type="number" fill="outline" ></ion-input>
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of messages.customerID">
+              <div
+                *ngIf="form.get('customerID')?.hasError(validation.type) && (form.get('customerID')?.dirty || form.get('customerID')?.touched)"
+                class="error-message"
+                >
+                {{ validation.message }}
+              </div>
+            </ng-container>
+          </div>
+
+          <ion-label class="label">Descrição da compra (opcional):</ion-label>
+          <ion-input class="description-input" aria-label="description" name="description" formControlName="description" type="text" fill="outline" ></ion-input>
+
+          <ion-label class="label">Valor da compra:</ion-label>
+          <ion-input class="input" label="R$" placeholder="0,00" name="purchase-amount" formControlName="purchaseAmount" required type="text" fill="outline" (ngModelChange)="updateCashbackAmount()" [maskito]="currencyMask" [maskitoElement]="maskPredicate"></ion-input>
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of messages.purchaseAmount">
+              <div
+                *ngIf="form.get('purchaseAmount')?.hasError(validation.type) && (form.get('purchaseAmount')?.dirty || form.get('purchaseAmount')?.touched)"
+                class="error-message"
+                >
+                {{ validation.message }}
+              </div>
+            </ng-container>
+          </div>
+
+          <ion-label class="label">Porcentagem de cashback:</ion-label>
+          <ion-input class="input" atria-label="cashback-percent" placeholder="%" name="cashback-percent" formControlName="cashbackPercent" required type="text" fill="outline" (ngModelChange)="updateCashbackAmount()"></ion-input>
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of messages.cashbackPercent">
+              <div
+                *ngIf="form.get('cashbackPercent')?.hasError(validation.type) && (form.get('cashbackPercent')?.dirty || form.get('cashbackPercent')?.touched)"
+                class="error-message"
+                >
+                {{ validation.message }}
+              </div>
+            </ng-container>
+          </div>
+
+          <ion-label class="label">Total de cashback:</ion-label>
+          <ion-input class="input" label="R$" placeholder="0,00" name="cashback-amount" disabled type="text" fill="outline" [value]="cashbackAmount"  [maskito]="currencyMask" [maskitoElement]="maskPredicate"></ion-input>
+
+          <ion-button [disabled]="!form.valid" expand="block" color="primary" type="submit" (click)="addPurchase()" expand="block">
+            Adicionar
+          </ion-button>
+
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </ion-content>
+
+</ion-content>
