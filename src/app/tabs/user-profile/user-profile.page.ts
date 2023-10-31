@@ -47,7 +47,7 @@ export class UserProfilePage {
       phone: new FormControl("", Validators.required),
       cnpj: new FormControl({value: '', disabled: true}),
       cpf: new FormControl({value: '02150304007', disabled: true}),
-      companies: new FormControl("", Validators.compose([
+      companyId: new FormControl("", Validators.compose([
         Validators.required
       ])),
     });

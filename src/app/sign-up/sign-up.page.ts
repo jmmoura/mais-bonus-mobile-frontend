@@ -9,6 +9,9 @@ import metadata from 'libphonenumber-js/min/metadata';
 
 import { CustomValidator } from './customValidator';
 import { FormUtilsService } from '../shared/form/form-utils.service';
+import { CompanyService } from '../service/company/company.service';
+import { CustomerService } from '../service/customer/customer.service';
+import { Company } from '../model/Company';
 
 @Component({
   selector: 'app-sign-up',
@@ -16,6 +19,7 @@ import { FormUtilsService } from '../shared/form/form-utils.service';
   styleUrls: ['./sign-up.page.scss'],
 })
 export class SignUpPage implements OnInit {
+
   readonly cpfMask: MaskitoOptions = this.formUtilsService.getCpfMask();
   readonly cnpjMask: MaskitoOptions = this.formUtilsService.getCnpjMask();
   readonly phoneMask: MaskitoOptions = maskitoPhoneOptionsGenerator({countryIsoCode: "BR", metadata});
@@ -23,13 +27,17 @@ export class SignUpPage implements OnInit {
 
   form: FormGroup;
   validationMessages = this.formUtilsService.getValidationMessages();
+  companies: Company[] = [];
 
   constructor(private router: Router,
     private formBuilder: NonNullableFormBuilder,
     private location: Location,
-    private formUtilsService: FormUtilsService
+    private formUtilsService: FormUtilsService,
+    private companyService: CompanyService,
+    private customerService: CustomerService
     ) {
 
+    this.companyService.list().subscribe({next: result => this.companies = result});
     this.form = this.initializeValidations();
     this.updateFormControls();
 
@@ -47,7 +55,22 @@ export class SignUpPage implements OnInit {
   }
 
   onSubmit() {
-    this.router.navigate(['/tabs']);
+    if (this.form.valid){
+      if (this.form.get('userType')?.value === 'company') {
+        this.companyService.save(this.form.value)
+          .subscribe({
+            next: result => console.log(result),
+            error: error => console.error(error)
+          });
+        } else if (this.form.get('userType')?.value === 'customer') {
+          this.customerService.save(this.form.value)
+          .subscribe({
+            next: result => console.log(result),
+            error: error => console.error(error)
+          });
+      }
+    }
+    // this.router.navigate(['/tabs']);
   }
 
   back() {
@@ -58,9 +81,11 @@ export class SignUpPage implements OnInit {
     if (this.form.get('userType')?.value === 'company') {
       this.cnpj?.enable();
       this.cpf?.disable();
+      this.form.get('companyId')?.disable();
     } else {
       this.cnpj?.disable();
       this.cpf?.enable();
+      this.form.get('companyId')?.enable();
     }
   }
 
@@ -81,7 +106,7 @@ export class SignUpPage implements OnInit {
         Validators.required,
         CustomValidator.isValidCpf
       ])),
-      companies: new FormControl("", Validators.compose([
+      companyId: new FormControl("", Validators.compose([
         Validators.required
       ])),
       password: new FormControl("", Validators.compose([

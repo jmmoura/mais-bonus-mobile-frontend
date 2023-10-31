@@ -2,6 +2,7 @@ import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { registerLocaleData } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import localePT from '@angular/common/locales/pt';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -13,7 +14,12 @@ registerLocaleData(localePT);
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
+    HttpClientModule
+  ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: DEFAULT_CURRENCY_CODE, useValue: 'BRL' },

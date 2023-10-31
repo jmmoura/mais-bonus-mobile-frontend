@@ -28,7 +28,7 @@ export class FormUtilsService {
         { type: 'required', message: 'CPF é obrigatório.' },
         { type: 'invalidCpf', message: 'Formato de CPF inválido.' }
       ],
-      companies: [
+      companyId: [
         { type: 'required', message: 'Empresa é obrigatório.' },
       ],
       password: [

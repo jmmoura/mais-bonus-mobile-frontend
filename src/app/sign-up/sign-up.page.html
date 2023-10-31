@@ -87,13 +87,13 @@
       </div>
 
       <ion-item *ngIf="form.get('userType')?.value === 'customer'">
-        <ion-select label="Empresa" label-placement="floating" formControlName="companies" required>
-          <ion-select-option *ngFor="let company of form.get('companies')?.value" [value]="company">{{ company.name }}</ion-select-option>
+        <ion-select label="Empresa" label-placement="floating" formControlName="companyId" required>
+          <ion-select-option *ngFor="let company of companies" [value]="company.id">{{ company.name }}</ion-select-option>
         </ion-select>
       </ion-item>
       <div class="validation-errors">
-        <ng-container *ngFor="let validation of validationMessages.companies">
-          <div class="error-message" *ngIf="form.get('companies')?.hasError(validation.type) && (form.get('companies')?.dirty || form.get('companies')?.touched)">
+        <ng-container *ngFor="let validation of validationMessages.companyId">
+          <div class="error-message" *ngIf="form.get('companyId')?.hasError(validation.type) && (form.get('companyId')?.dirty || form.get('companyId')?.touched)">
             {{ validation.message }}
           </div>
         </ng-container>
