@@ -11,27 +11,20 @@ import { User } from 'src/app/model/User';
 export class AuthService {
 
   private readonly API_URL = 'api/v1/sign-in';
-  private _userRole: string = '';
 
   constructor(private httpClient: HttpClient) {
   }
 
-  public get userRole(): string {
-    return this._userRole;
-  }
-  public set userRole(value: string) {
-    this._userRole = value;
-  }
-
   login(user: User) {
-    return this.httpClient.post<Authentication>(this.API_URL, user);
+      return this.httpClient.post<Authentication>(this.API_URL, user);
   }
 
   logout() {
+      localStorage.removeItem('companyId');
+      localStorage.removeItem('userRole');
       localStorage.removeItem('token');
       // localStorage.removeItem("expires_at");
   }
-
 
   // public isLoggedIn() {
   //     return moment().isBefore(this.getExpiration());

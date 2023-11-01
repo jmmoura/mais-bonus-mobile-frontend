@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 
-import { AuthService } from '../service/authentication/auth.service';
-
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
@@ -10,9 +8,9 @@ import { AuthService } from '../service/authentication/auth.service';
 export class TabsPage {
   userRole: string | null | undefined;
 
-  constructor(private authService: AuthService) {
+  constructor() {
 
-    this.userRole = this.authService.userRole;
+    this.userRole = localStorage.getItem('userRole');
 
   }
 

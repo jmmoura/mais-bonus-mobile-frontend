@@ -1,6 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Carteira</ion-title>
+    <ion-item class="logout" button (click)="logout()" slot="end">
+      <ion-icon name="log-out-outline" class="logout"></ion-icon>
+      <ion-label>Sair</ion-label>
+    </ion-item>
   </ion-toolbar>
 </ion-header>
 
@@ -37,13 +41,13 @@
       </ion-item-divider>
 
       <ion-item *ngFor="let score of statement">
-        <ion-text class="date">{{ score.date | date:'short':'':'pt-BR' }}</ion-text>
+        <ion-text class="date">{{ score.timestamp | date:'short':'':'pt-BR' }}</ion-text>
         <ion-text>
           <ion-text>
             <p>{{ score.description }}</p>
           </ion-text>
           <ion-text color="success">
-            <p color="success">{{ score.value | currency : 'BRL' }}</p>
+            <p color="success">{{ score.cashbackAmount | currency : 'BRL' }}</p>
           </ion-text>
         </ion-text>
       </ion-item>

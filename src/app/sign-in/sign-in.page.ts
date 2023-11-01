@@ -64,9 +64,10 @@ export class SignInPage implements OnInit {
   }
 
   private setSession(authResult: Authentication) {
-    this.authService.userRole = authResult.role;
-    // const expiresAt = moment().add(authResult.expiresIn,'second');
+    localStorage.setItem('userRole', authResult.role);
+    localStorage.setItem('companyId', authResult.companyId.toString());
 
+    // const expiresAt = moment().add(authResult.expiresIn,'second');
     localStorage.setItem('token', authResult.token);
     // localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()) );
 }

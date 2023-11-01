@@ -1,11 +1,14 @@
+import { ScoringService } from './../../service/scoring/scoring.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Score } from 'src/app/model/Score';
+import { AuthService } from 'src/app/service/authentication/auth.service';
 
-interface score {
-  description: string;
-  value: number;
-  date: Date;
-}
+// interface score {
+//   description: string;
+//   value: number;
+//   date: Date;
+// }
 
 @Component({
   selector: 'app-wallet',
@@ -13,32 +16,38 @@ interface score {
   styleUrls: ['./wallet.page.scss'],
 })
 export class WalletPage implements OnInit {
-  balance: number = 20.00;
-  statement: score[] = [];
+  balance: number = 0;
+  statement: Score[] = [];
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private scoringService: ScoringService,
+    private authService: AuthService
+  ) {
 
-  ngOnInit() {;
-    this.statement = [
-      {
-        description: "Compra 1",
-        value: 10.00,
-        date: new Date()
-      },
-      {
-        description: "Compra 2",
-        value: 15.00,
-        date: new Date()
-      }
-    ]
+    const companyIdStr = localStorage.getItem('companyId');
+    const companyId = companyIdStr ? Number.parseInt(companyIdStr) : null;
+    this.scoringService.list(companyId).subscribe(result => {
+      this.statement = result;
+      this.balance = result.reduce((acc, current) => { return acc + current.cashbackAmount }, 0)
+    });
+
+  }
+
+  ngOnInit() {
   }
 
   redeem() {
-    this.router.navigate([ '/customer/redeem', this.balance ])
+    this.router.navigate([ '/customer/redeem', this.balance ]);
   }
 
   score() {
-    this.router.navigate([ '/customer/score' ])
+    this.router.navigate([ '/customer/score' ]);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate([ '' ]);
   }
 
 }

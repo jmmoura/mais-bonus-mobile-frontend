@@ -1,4 +1,5 @@
 export interface Authentication {
   token: string,
-  role: string
+  role: string,
+  companyId: number
 }
