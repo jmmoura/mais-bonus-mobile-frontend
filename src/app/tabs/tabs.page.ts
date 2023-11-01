@@ -1,14 +1,19 @@
 import { Component } from '@angular/core';
 
+import { AuthService } from '../service/authentication/auth.service';
+
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss']
 })
 export class TabsPage {
-  userType: string = 'company';
-  // userType: string = 'customer';
+  userRole: string | null | undefined;
 
-  constructor() {}
+  constructor(private authService: AuthService) {
+
+    this.userRole = this.authService.userRole;
+
+  }
 
 }

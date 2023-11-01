@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { LoadingController } from '@ionic/angular';
 
 import { MaskitoElementPredicateAsync, MaskitoOptions } from '@maskito/core';
 import { maskitoPhoneOptionsGenerator } from '@maskito/phone';
@@ -12,6 +13,9 @@ import { FormUtilsService } from '../shared/form/form-utils.service';
 import { CompanyService } from '../service/company/company.service';
 import { CustomerService } from '../service/customer/customer.service';
 import { Company } from '../model/Company';
+import { AuthService } from '../service/authentication/auth.service';
+import { Authentication } from '../model/Authentication';
+import { User } from '../model/User';
 
 @Component({
   selector: 'app-sign-up',
@@ -27,6 +31,8 @@ export class SignUpPage implements OnInit {
 
   form: FormGroup;
   validationMessages = this.formUtilsService.getValidationMessages();
+  isToastOpen: boolean = false;
+  loading: any;
   companies: Company[] = [];
 
   constructor(private router: Router,
@@ -34,7 +40,9 @@ export class SignUpPage implements OnInit {
     private location: Location,
     private formUtilsService: FormUtilsService,
     private companyService: CompanyService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private authService: AuthService,
+    private loadingCtrl: LoadingController
     ) {
 
     this.companyService.list().subscribe({next: result => this.companies = result});
@@ -56,25 +64,80 @@ export class SignUpPage implements OnInit {
 
   onSubmit() {
     if (this.form.valid){
+
+      this.showLoading();
+
       if (this.form.get('userType')?.value === 'company') {
         this.companyService.save(this.form.value)
           .subscribe({
-            next: result => console.log(result),
-            error: error => console.error(error)
+            next: () => this.login(),
+            error: () => {
+              this.loading.dismiss();
+              this.setToastOpen(true);
+            }
           });
         } else if (this.form.get('userType')?.value === 'customer') {
           this.customerService.save(this.form.value)
           .subscribe({
-            next: result => console.log(result),
-            error: error => console.error(error)
+            next: result => this.login(),
+            error: () => {
+              this.loading.dismiss();
+              this.setToastOpen(true);
+            }
           });
       }
     }
-    // this.router.navigate(['/tabs']);
+
   }
 
   back() {
     this.location.back();
+  }
+
+  login() {
+    const user: User = {
+      username: this.form.get('email')?.value,
+      password: this.form.get('password')?.value
+    }
+
+    this.authService.login(user)
+      .subscribe({
+        next: result => {
+          this.setSession(result);
+          this.loading.dismiss();
+
+          if (result.role.toUpperCase() === 'COMPANY') {
+            this.router.navigate([ '/tabs/cashback' ]);
+          } else if (result.role.toUpperCase() === 'CUSTOMER') {
+            this.router.navigate([ '/tabs/wallet' ]);
+          }
+
+        },
+        error: () => {
+          this.loading.dismiss();
+          this.setToastOpen(true);
+        }
+      });
+  }
+
+  private setSession(authResult: Authentication) {
+    this.authService.userRole = authResult.role;
+    // const expiresAt = moment().add(authResult.expiresIn,'second');
+
+    localStorage.setItem('token', authResult.token);
+    // localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()) );
+  }
+
+  setToastOpen(isOpen: boolean) {
+    this.isToastOpen = isOpen;
+  }
+
+  async showLoading() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Realizando cadastro',
+    });
+
+    this.loading.present();
   }
 
   updateFormControls(): void {

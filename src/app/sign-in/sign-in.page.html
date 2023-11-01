@@ -15,11 +15,11 @@
     <form [formGroup]="form">
 
       <ion-item>
-        <ion-input label="Usuário (e-mail)" labelPlacement="floating" required name="username" formControlName="userName" type="text"></ion-input>
+        <ion-input label="Usuário (e-mail)" labelPlacement="floating" required name="username" formControlName="username" type="text"></ion-input>
       </ion-item>
       <div class="validation-errors">
-        <ng-container *ngFor="let validation of messages.userName">
-          <div class="error-message" *ngIf="form.get('userName')?.hasError(validation.type) && (form.get('userName')?.dirty || form.get('userName')?.touched)">
+        <ng-container *ngFor="let validation of messages.username">
+          <div class="error-message" *ngIf="form.get('username')?.hasError(validation.type) && (form.get('username')?.dirty || form.get('username')?.touched)">
             {{ validation.message }}
           </div>
         </ng-container>
@@ -55,6 +55,14 @@
     <ion-item button color="primary" class="sign-up-button" (click)="signUp()">
       <ion-label>Cadastre-se</ion-label>
     </ion-item>
+
+    <ion-toast
+      [isOpen]="isToastOpen"
+      message="Usuário e/ou senha inválido(s)"
+      position="middle"
+      [duration]="5000"
+      (didDismiss)="setToastOpen(false)"
+    ></ion-toast>
 
   </ion-content>
 </ion-content>

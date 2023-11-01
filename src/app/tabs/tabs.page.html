@@ -1,12 +1,12 @@
 <ion-tabs>
 
   <ion-tab-bar slot="bottom" >
-    <ion-tab-button tab="wallet" href="/tabs/wallet" *ngIf="userType === 'customer'">
+    <ion-tab-button tab="wallet" href="/tabs/user/wallet" *ngIf="userRole?.toUpperCase() === 'CUSTOMER'">
       <ion-icon name="wallet-outline"></ion-icon>
       <ion-label>Carteira</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="cashback" href="/tabs/cashback" *ngIf="userType === 'company'">
+    <ion-tab-button tab="cashback" href="/tabs/user/cashback" *ngIf="userRole?.toUpperCase() === 'COMPANY'">
       <ion-icon name="cash-outline"></ion-icon>
       <ion-label>Cashback</ion-label>
     </ion-tab-button>

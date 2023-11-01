@@ -2,41 +2,35 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { AuthService } from '../service/authentication/auth.service';
+import { Authentication } from '../model/Authentication';
+import { LoadingController } from '@ionic/angular';
+
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.page.html',
   styleUrls: ['./sign-in.page.scss'],
 })
 export class SignInPage implements OnInit {
-  form: FormGroup;
-  // username!: string | null;
-  // password!: string | null;
-  // message!: string | null;
-  // hide: boolean;
-  messages = {
-    userName: [
-      { type: 'required', message: 'Usuário é obrigatório.' }
-      // { type: 'minlength', message: 'Username must be at least 5 characters long.' },
-      // { type: 'maxlength', message: 'Username cannot be more than 25 characters long.' },
-      // { type: 'pattern', message: 'Your username must contain only numbers and letters.' },
-      // { type: 'validUsername', message: 'Your username has already been taken.' }
-    ],
-    password: [
-      { type: 'required', message: 'Senha é obrigatória.' }
-    ]
-  }
 
-  constructor(private router: Router, private formBuilder: NonNullableFormBuilder) {
-    // this.hide = true;
+  form: FormGroup;
+  isToastOpen: boolean = false;
+  loading: any;
+  messages = this.getValidationMessages();
+
+  constructor(
+    private router: Router,
+    private formBuilder: NonNullableFormBuilder,
+    private authService: AuthService,
+    private loadingCtrl: LoadingController
+  ) {
+
     this.form = this.formBuilder.group({
-      userName: new FormControl("", Validators.compose([
+      username: new FormControl("", Validators.compose([
         Validators.required
-        // Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])),
       password: new FormControl("", Validators.compose([
         Validators.required
-        // Validators.minLength(8),
-        // Validators.pattern('^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$')
       ]))
     });
   }
@@ -46,23 +40,62 @@ export class SignInPage implements OnInit {
 
   login(): void {
 
-    this.router.navigate([ '/tabs/cashback' ]);
+    this.showLoading();
 
-    // if (this.storageService.login(this.username, this.password)) {
-    //   if (this.storageService.loggedIn.profile === Profile.ADMIN) {
-    //     this.router.navigate([ '/admin' ]);
-    //   } else if (this.storageService.loggedIn.profile === Profile.RESEARCHER) {
-    //     this.router.navigate([ '/researcher' ]);
-    //   } else {
-    //     this.message = 'Perfil de usuário inválido!';
-    //   }
-    // } else {
-    //   this.message = 'Usúario e/ou senha inválidos!';
-    // }
+    this.authService.login(this.form.value)
+      .subscribe({
+        next: result => {
+          this.setSession(result);
+          this.loading.dismiss();
+
+          if (result.role.toUpperCase() === 'COMPANY') {
+            this.router.navigate([ '/tabs/cashback' ]);
+          } else if (result.role.toUpperCase() === 'CUSTOMER') {
+            this.router.navigate([ '/tabs/wallet' ]);
+          }
+
+        },
+        error: () => {
+          this.loading.dismiss();
+          this.setToastOpen(true);
+        }
+      });
+
   }
+
+  private setSession(authResult: Authentication) {
+    this.authService.userRole = authResult.role;
+    // const expiresAt = moment().add(authResult.expiresIn,'second');
+
+    localStorage.setItem('token', authResult.token);
+    // localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()) );
+}
 
   signUp(): void {
     this.router.navigate([ '/sign-up' ]);
+  }
+
+  setToastOpen(isOpen: boolean) {
+    this.isToastOpen = isOpen;
+  }
+
+  async showLoading() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Realizando login',
+    });
+
+    this.loading.present();
+  }
+
+  private getValidationMessages() {
+    return {
+      username: [
+        { type: 'required', message: 'Usuário é obrigatório.' }
+      ],
+      password: [
+        { type: 'required', message: 'Senha é obrigatória.' }
+      ]
+    };
   }
 
 }
