@@ -41,6 +41,15 @@
         </form>
       </ion-card-content>
     </ion-card>
+
+    <ion-toast
+      [isOpen]="isToastOpen"
+      message="Erro ao gerar código de resgate"
+      position="bottom"
+      [duration]="5000"
+      (didDismiss)="setToastOpen(false)"
+    ></ion-toast>
+
   </ion-content>
 
 </ion-content>

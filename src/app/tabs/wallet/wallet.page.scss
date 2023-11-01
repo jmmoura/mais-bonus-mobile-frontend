@@ -13,3 +13,26 @@
 .logout {
   color: white;
 }
+
+.purchase-amount {
+  color: white;
+  font-size: smaller;
+  margin-left: 0.5em;
+}
+
+.score-amount-details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.statement-item {
+  border-bottom-color: grey;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}

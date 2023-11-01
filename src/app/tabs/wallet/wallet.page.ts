@@ -1,21 +1,17 @@
-import { ScoringService } from './../../service/scoring/scoring.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { Score } from 'src/app/model/Score';
 import { AuthService } from 'src/app/service/authentication/auth.service';
-
-// interface score {
-//   description: string;
-//   value: number;
-//   date: Date;
-// }
+import { ScoringService } from './../../service/scoring/scoring.service';
 
 @Component({
   selector: 'app-wallet',
   templateUrl: './wallet.page.html',
   styleUrls: ['./wallet.page.scss'],
 })
-export class WalletPage implements OnInit {
+export class WalletPage implements OnInit, OnDestroy {
+
   balance: number = 0;
   statement: Score[] = [];
 
@@ -23,18 +19,25 @@ export class WalletPage implements OnInit {
     private router: Router,
     private scoringService: ScoringService,
     private authService: AuthService
-  ) {
+  ) { }
+
+  ngOnInit() {
+  }
+
+  @HostListener('unloaded')
+  ngOnDestroy() {
+    console.log('Items destroyed');
+  }
+
+  ionViewWillEnter() {
 
     const companyIdStr = localStorage.getItem('companyId');
     const companyId = companyIdStr ? Number.parseInt(companyIdStr) : null;
     this.scoringService.list(companyId).subscribe(result => {
-      this.statement = result;
+      this.statement = result.sort((a, b) => Number(new Date(b.timestamp || '')) - Number(new Date(a.timestamp || '')) );
       this.balance = result.reduce((acc, current) => { return acc + current.cashbackAmount }, 0)
     });
 
-  }
-
-  ngOnInit() {
   }
 
   redeem() {

@@ -22,11 +22,11 @@
         <form [formGroup]="form">
 
           <ion-label class="label">ID do cliente:</ion-label>
-          <ion-input class="input" aria-label="customer-id" placeholder="00000" name="customer-ID" formControlName="customerID" required type="number" fill="outline" ></ion-input>
+          <ion-input class="input" aria-label="customer-id" placeholder="00000" name="customer-ID" formControlName="customerPersonalId" required type="number" fill="outline" ></ion-input>
           <div class="validation-errors">
-            <ng-container *ngFor="let validation of messages.customerID">
+            <ng-container *ngFor="let validation of messages.customerPersonalId">
               <div
-                *ngIf="form.get('customerID')?.hasError(validation.type) && (form.get('customerID')?.dirty || form.get('customerID')?.touched)"
+                *ngIf="form.get('customerPersonalId')?.hasError(validation.type) && (form.get('customerPersonalId')?.dirty || form.get('customerPersonalId')?.touched)"
                 class="error-message"
                 >
                 {{ validation.message }}
@@ -64,7 +64,7 @@
           </div>
 
           <ion-label class="label">Total de cashback:</ion-label>
-          <ion-input class="input" label="R$" placeholder="0,00" name="cashback-amount" disabled type="text" fill="outline" [value]="cashbackAmount"  [maskito]="currencyMask" [maskitoElement]="maskPredicate"></ion-input>
+          <ion-input class="input" label="R$" placeholder="0,00" name="cashback-amount" formControlName="cashbackAmount" type="text" fill="outline" [value]="cashbackAmount"  [maskito]="currencyMask" [maskitoElement]="maskPredicate"></ion-input>
 
           <ion-button [disabled]="!form.valid" expand="block" color="primary" type="submit" (click)="addPurchase()" expand="block">
             Adicionar
@@ -73,6 +73,14 @@
         </form>
       </ion-card-content>
     </ion-card>
+
+    <ion-toast
+      [isOpen]="isToastOpen"
+      [message]="toastMessage"
+      position="bottom"
+      [duration]="5000"
+      (didDismiss)="setToastOpen(false)"
+    ></ion-toast>
   </ion-content>
 
 </ion-content>

@@ -23,7 +23,7 @@ const routes: Routes = [
     loadChildren: () => import('./redeem/redeem.module').then( m => m.RedeemPageModule)
   },
   {
-    path: 'customer/redeem/code/get',
+    path: 'customer/redeem/get/code/:code',
     loadChildren: () => import('./redeem-code/redeem-code.module').then( m => m.RedeemCodePageModule)
   },
   {

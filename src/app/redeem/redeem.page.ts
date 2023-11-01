@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { MaskitoElementPredicateAsync, MaskitoOptions } from '@maskito/core';
 import { maskitoNumberOptionsGenerator } from '@maskito/kit';
+import { LoadingController } from '@ionic/angular';
+
+import { RedeemService } from '../service/redeem/redeem.service';
+import { Redeem } from '../model/Redeem';
 
 @Component({
   selector: 'app-redeem',
@@ -21,10 +26,15 @@ export class RedeemPage implements OnInit {
   balance: number;
   form: FormGroup;
   messages = this.getValidationMessages()
+  loading: any;
+  isToastOpen: boolean = false;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private formBuilder: NonNullableFormBuilder,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private redeemService: RedeemService,
+    private loadingCtrl: LoadingController
   ) {
 
     this.balance = 0;
@@ -48,7 +58,36 @@ export class RedeemPage implements OnInit {
   }
 
   redeem() {
-    this.router.navigate([ '/customer/redeem/code/get' ])
+    this.showLoading();
+
+    const redeem: Redeem = {
+      amount: Number.parseFloat(this.form.get('amount')?.value),
+      companyId: Number.parseInt(localStorage.getItem('companyId') || '0')
+    }
+
+    this.redeemService.save(redeem).subscribe({
+      next: result => {
+        this.loading.dismiss();
+        this.router.navigate([ '/customer/redeem/get/code', result.code ]);
+      },
+      error: () => {
+        this.loading.dismiss();
+        this.setToastOpen(true);
+      }
+    });
+
+  }
+
+  setToastOpen(isOpen: boolean) {
+    this.isToastOpen = isOpen;
+  }
+
+  async showLoading() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Adicionando resgate',
+    });
+
+    this.loading.present();
   }
 
   back() {

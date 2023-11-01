@@ -123,6 +123,7 @@ export class SignUpPage implements OnInit {
   private setSession(authResult: Authentication) {
     localStorage.setItem('userRole', authResult.role);
     localStorage.setItem('companyId', authResult.companyId.toString());
+    localStorage.setItem('customerPersonalId', authResult.customerPersonalId);
     // const expiresAt = moment().add(authResult.expiresIn,'second');
 
     localStorage.setItem('token', authResult.token);

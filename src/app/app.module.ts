@@ -17,7 +17,9 @@ registerLocaleData(localePT);
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({
+      innerHTMLTemplatesEnabled: true
+    }),
     AppRoutingModule,
     HttpClientModule
   ],

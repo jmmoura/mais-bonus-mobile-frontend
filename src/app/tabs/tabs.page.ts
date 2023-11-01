@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss']
 })
-export class TabsPage {
+export class TabsPage implements OnInit {
   userRole: string | null | undefined;
 
   constructor() {
+  }
 
+  ngOnInit(): void {
     this.userRole = localStorage.getItem('userRole');
-
   }
 
 }

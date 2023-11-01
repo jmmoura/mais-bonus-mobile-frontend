@@ -37,17 +37,18 @@
       </ion-item>
 
       <ion-item-divider>
-        <ion-label>Extrato</ion-label>
+        <ion-label color="secondary">Extrato</ion-label>
       </ion-item-divider>
 
-      <ion-item *ngFor="let score of statement">
+      <ion-item class="statement-item" *ngFor="let score of statement">
         <ion-text class="date">{{ score.timestamp | date:'short':'':'pt-BR' }}</ion-text>
         <ion-text>
           <ion-text>
             <p>{{ score.description }}</p>
           </ion-text>
-          <ion-text color="success">
-            <p color="success">{{ score.cashbackAmount | currency : 'BRL' }}</p>
+          <ion-text class="score-amount-details" [color]="score.cashbackAmount > 0 ? 'success' : 'danger'">
+            <p>{{ score.cashbackAmount | currency : 'BRL' }}</p>
+            <p *ngIf="score.purchaseAmount" class="purchase-amount">({{ score.purchaseAmount | currency : 'BRL' }})</p>
           </ion-text>
         </ion-text>
       </ion-item>

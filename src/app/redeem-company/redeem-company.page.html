@@ -23,11 +23,11 @@
           <ion-card-title class="redeem-code-title">Código de Resgate</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <ion-input class="code-input" aria-label="redeem-code" name="redeemCode" formControlName="redeemCode" placeholder="00000" required type="number" fill="outline"></ion-input>
+          <ion-input class="code-input" aria-label="redeem-code" name="code" formControlName="code" placeholder="00000" required type="number" fill="outline"></ion-input>
           <div class="validation-errors">
-            <ng-container *ngFor="let validation of messages.redeemCode">
+            <ng-container *ngFor="let validation of messages.code">
               <div
-                *ngIf="form.get('redeemCode')?.hasError(validation.type) && (form.get('redeemCode')?.dirty || form.get('redeemCode')?.touched)"
+                *ngIf="form.get('code')?.hasError(validation.type) && (form.get('code')?.dirty || form.get('code')?.touched)"
                 class="error-message"
                 >
                 {{ validation.message }}
@@ -37,7 +37,7 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-button [disabled]="form.get('redeemCode')?.invalid"
+      <ion-button [disabled]="form.get('code')?.invalid"
         expand="block" color="primary" type="submit"
         (click)="redeem()"
         >
@@ -45,6 +45,15 @@
       </ion-button>
 
     </form>
+
+
+    <ion-toast
+      [isOpen]="isToastOpen"
+      [message]="toastMessage"
+      position="bottom"
+      [duration]="5000"
+      (didDismiss)="setToastOpen(false)"
+    ></ion-toast>
   </ion-card-content>
 
 </ion-content>

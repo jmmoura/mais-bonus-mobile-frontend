@@ -8,9 +8,12 @@ import { Router } from '@angular/router';
 })
 export class ScorePage implements OnInit {
 
+  customerPersonalId: string | null = null;
+
   constructor(private router: Router) { }
 
   ngOnInit() {
+    this.customerPersonalId = localStorage.getItem('customerPersonalId');
   }
 
   back() {
