@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 // import * as moment from "moment";
 
+import { environment } from './../../../environments/environment.prod';
 import { Authentication } from 'src/app/model/Authentication';
 import { User } from 'src/app/model/User';
 
@@ -10,13 +11,14 @@ import { User } from 'src/app/model/User';
 })
 export class AuthService {
 
-  private readonly API_URL = 'api/v1/sign-in';
+  private readonly BASE_URL = environment.baseUrl;
+  private readonly API_URL = '/api/v1/sign-in';
 
   constructor(private httpClient: HttpClient) {
   }
 
   login(user: User) {
-      return this.httpClient.post<Authentication>(this.API_URL, user);
+      return this.httpClient.post<Authentication>(this.BASE_URL + this.API_URL, user);
   }
 
   logout() {
