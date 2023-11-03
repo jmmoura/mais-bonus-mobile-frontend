@@ -16,6 +16,10 @@ const routes: Routes = [
         loadChildren: () => import('./cashback/cashback.module').then(m => m.CashbackPageModule)
       },
       {
+        path: 'discounts',
+        loadChildren: () => import('./discounts/discounts/discounts.module').then( m => m.DiscountsPageModule)
+      },
+      {
         path: 'user-profile',
         loadChildren: () => import('./user-profile/user-profile.module').then(m => m.UserProfilePageModule)
       },

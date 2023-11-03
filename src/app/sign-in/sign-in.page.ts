@@ -83,7 +83,7 @@ export class SignInPage implements OnInit {
 
   async showLoading() {
     this.loading = await this.loadingCtrl.create({
-      message: 'Realizando login',
+      message: 'Fazendo login',
     });
 
     this.loading.present();

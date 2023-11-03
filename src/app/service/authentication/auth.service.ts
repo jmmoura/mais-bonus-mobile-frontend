@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 // import * as moment from "moment";
 
-import { environment } from './../../../environments/environment.prod';
+import { environment } from './../../../environments/environment';
 import { Authentication } from 'src/app/model/Authentication';
 import { User } from 'src/app/model/User';
 

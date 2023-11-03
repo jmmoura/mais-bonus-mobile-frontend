@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://mais-bonus-28e6da036831.herokuapp.com'
+  baseUrl: 'http://localhost:8080'
 };
 
 /*
