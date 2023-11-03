@@ -6,3 +6,30 @@
   color: var(--ion-color-danger);
   font-size: small;
 }
+
+.card-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+
+  ion-card {
+    max-width: 600px;
+    .ion-blue-bkg {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      img {
+        height: 60%;
+      }
+    }
+
+    .welcome {
+      #trigger-icon {
+        float: right;
+        margin-bottom: 16px;
+      }
+    }
+  }
+}

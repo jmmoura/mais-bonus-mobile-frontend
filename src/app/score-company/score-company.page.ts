@@ -53,17 +53,25 @@ export class ScoreCompanyPage implements OnInit {
   }
 
   updateCashbackAmount() {
-    const purchaseAmount = Number(this.form.get('purchaseAmount')?.value.replaceAll('.', '').replace(',', '.'));
-    const cashbackPercent = Number(this.form.get('cashbackPercent')?.value.replaceAll('.', '').replace(',', '.'));
+    const purchaseAmount = this.convertToNumber(this.form.get('purchaseAmount')?.value);
+    const cashbackPercent = this.convertToNumber(this.form.get('cashbackPercent')?.value);
 
     const totalAmount = purchaseAmount * cashbackPercent / 100;
+    this.cashbackAmount = this.convertToFormattedString(totalAmount);
+
+  }
+
+  private convertToNumber(value: string) {
+    return Number(value.replaceAll('.', '').replace(',', '.'));
+  }
+
+  private convertToFormattedString(value: number) {
     const numberFormat = Intl.NumberFormat('pt-BR', {
       style: 'decimal',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
-    this.cashbackAmount = numberFormat.format(totalAmount);
-
+    return numberFormat.format(value);
   }
 
   addPurchase() {
@@ -73,8 +81,8 @@ export class ScoreCompanyPage implements OnInit {
     const score: Score = {
       description: this.form.get('description')?.value,
       customerPersonalId: this.form.get('customerPersonalId')?.value,
-      cashbackAmount: Number.parseFloat(this.cashbackAmount),
-      purchaseAmount: Number.parseFloat(this.form.get('purchaseAmount')?.value)
+      cashbackAmount: this.convertToNumber(this.cashbackAmount),
+      purchaseAmount: this.convertToNumber(this.form.get('purchaseAmount')?.value)
     }
 
     this.scoringService.save(score).subscribe({
