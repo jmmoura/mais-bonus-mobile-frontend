@@ -3,9 +3,11 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
 import { Router } from '@angular/router';
 import { MaskitoElementPredicateAsync, MaskitoOptions } from '@maskito/core';
 import { maskitoNumberOptionsGenerator } from '@maskito/kit';
-import { ScoringService } from '../service/scoring/scoring.service';
 import { LoadingController } from '@ionic/angular';
+
+import { ScoringService } from '../service/scoring/scoring.service';
 import { Score } from '../model/Score';
+import { FormUtilsService } from './../shared/form/form-utils.service';
 
 @Component({
   selector: 'app-score-company',
@@ -32,7 +34,8 @@ export class ScoreCompanyPage implements OnInit {
   constructor(private router: Router,
     private formBuilder: NonNullableFormBuilder,
     private scoringService: ScoringService,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private formUtilsService: FormUtilsService
   ) {
 
     this.form = this.formBuilder.group({
@@ -53,25 +56,12 @@ export class ScoreCompanyPage implements OnInit {
   }
 
   updateCashbackAmount() {
-    const purchaseAmount = this.convertToNumber(this.form.get('purchaseAmount')?.value);
-    const cashbackPercent = this.convertToNumber(this.form.get('cashbackPercent')?.value);
+    const purchaseAmount = this.formUtilsService.convertToNumber(this.form.get('purchaseAmount')?.value);
+    const cashbackPercent = this.formUtilsService.convertToNumber(this.form.get('cashbackPercent')?.value);
 
     const totalAmount = purchaseAmount * cashbackPercent / 100;
-    this.cashbackAmount = this.convertToFormattedString(totalAmount);
+    this.cashbackAmount = this.formUtilsService.convertToFormattedString(totalAmount);
 
-  }
-
-  private convertToNumber(value: string) {
-    return Number(value.replaceAll('.', '').replace(',', '.'));
-  }
-
-  private convertToFormattedString(value: number) {
-    const numberFormat = Intl.NumberFormat('pt-BR', {
-      style: 'decimal',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-    return numberFormat.format(value);
   }
 
   addPurchase() {
@@ -81,8 +71,8 @@ export class ScoreCompanyPage implements OnInit {
     const score: Score = {
       description: this.form.get('description')?.value,
       customerPersonalId: this.form.get('customerPersonalId')?.value,
-      cashbackAmount: this.convertToNumber(this.cashbackAmount),
-      purchaseAmount: this.convertToNumber(this.form.get('purchaseAmount')?.value)
+      cashbackAmount: this.formUtilsService.convertToNumber(this.cashbackAmount),
+      purchaseAmount: this.formUtilsService.convertToNumber(this.form.get('purchaseAmount')?.value)
     }
 
     this.scoringService.save(score).subscribe({

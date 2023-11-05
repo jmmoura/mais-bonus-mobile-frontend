@@ -6,6 +6,7 @@ import { MaskitoElementPredicateAsync, MaskitoOptions } from '@maskito/core';
 import { maskitoNumberOptionsGenerator } from '@maskito/kit';
 import { LoadingController } from '@ionic/angular';
 
+import { FormUtilsService } from './../shared/form/form-utils.service';
 import { RedeemService } from '../service/redeem/redeem.service';
 import { Redeem } from '../model/Redeem';
 
@@ -34,20 +35,21 @@ export class RedeemPage implements OnInit {
     private formBuilder: NonNullableFormBuilder,
     private activatedRoute: ActivatedRoute,
     private redeemService: RedeemService,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private formUtilsService: FormUtilsService
   ) {
 
     this.balance = 0;
     this.activatedRoute.params.subscribe(params => {
       this.balance = params['balance'];
-      this.form.controls['amount'].setValue(this.balance);
+      this.form.controls['amount'].setValue(this.formUtilsService.convertToFormattedString(this.balance));
     });
 
     this.form = this.formBuilder.group({
       amount: new FormControl("", Validators.required)
     }, {
       validators: (group: AbstractControl) => {
-        const inputAmount = Number(group.get('amount')?.value.replaceAll(".", "").replace(",", "."));
+        const inputAmount =  this.formUtilsService.convertToNumber(group.get('amount')?.value);
         return inputAmount <= this.balance && inputAmount > 0 ? null : { amountInvalid: true };
       }
     });
@@ -61,7 +63,7 @@ export class RedeemPage implements OnInit {
     this.showLoading();
 
     const redeem: Redeem = {
-      amount: Number.parseFloat(this.form.get('amount')?.value),
+      amount: this.formUtilsService.convertToNumber(this.form.get('amount')?.value),
       companyId: Number.parseInt(localStorage.getItem('companyId') || '0')
     }
 

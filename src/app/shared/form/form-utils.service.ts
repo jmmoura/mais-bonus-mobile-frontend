@@ -8,6 +8,19 @@ export class FormUtilsService {
 
   constructor() { }
 
+  convertToNumber(value: string) {
+    return Number(value.replaceAll('.', '').replace(',', '.'));
+  }
+
+  convertToFormattedString(value: number) {
+    const numberFormat = Intl.NumberFormat('pt-BR', {
+      style: 'decimal',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+    return numberFormat.format(value);
+  }
+
   getValidationMessages() {
     return {
       name: [
