@@ -1,6 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Promoções e cupons de desconto</ion-title>
+    <ion-title>Promoções e cupons</ion-title>
+    <ion-item class="logout" button (click)="logout()" slot="end">
+      <ion-icon name="log-out-outline" class="logout"></ion-icon>
+      <ion-label>Sair</ion-label>
+    </ion-item>
   </ion-toolbar>
 </ion-header>
 
@@ -18,7 +22,7 @@
         <ion-card-title>Em breve</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        Ainda não é possível usar promções e descontos. Você será informado quando estiver disponível.
+        Ainda não é possível usar promoções e cupons de descontos. Você será informado quando estes recursos estiverem disponíveis.
       </ion-card-content>
     </ion-card>
 

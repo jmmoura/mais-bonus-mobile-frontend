@@ -29,6 +29,7 @@ export class ScoreCompanyPage implements OnInit {
   cashbackAmount = '0,00';
   isToastOpen: boolean = false;
   toastMessage: string = '';
+  toastSuccess: boolean = false;
   loading: any;
 
   constructor(private router: Router,
@@ -78,8 +79,8 @@ export class ScoreCompanyPage implements OnInit {
     this.scoringService.save(score).subscribe({
       next: () => {
         this.loading.dismiss();
-        this.setToastOpen(true, 'Pontação salva com sucesso');
-
+        this.toastSuccess = true;
+        this.setToastOpen(true, 'Pontuação salva com sucesso');
       },
       error: () => {
         this.loading.dismiss();
@@ -91,6 +92,13 @@ export class ScoreCompanyPage implements OnInit {
   setToastOpen(isOpen: boolean, message: string = '') {
     this.isToastOpen = isOpen;
     this.toastMessage = message;
+  }
+
+  onToastDidDismiss() {
+    if (this.toastSuccess) {
+      this.back();
+    }
+    this.isToastOpen = false;
   }
 
   async showLoading() {

@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/service/authentication/auth.service';
 import { FormUtilsService } from './../../shared/form/form-utils.service';
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
@@ -22,7 +23,9 @@ export class UserProfilePage {
   newPasswordForm: FormGroup;
   validationMessages = this.formUtilsService.getValidationMessages();
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
+    private authService: AuthService,
     private formBuilder: NonNullableFormBuilder,
     private formUtilsService: FormUtilsService
     ) {
@@ -34,6 +37,11 @@ export class UserProfilePage {
 
   onSubmit() {
     this.router.navigate(['/tabs']);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate([ '' ]);
   }
 
   private initializeUserDataValidations(): FormGroup<any> {
