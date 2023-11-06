@@ -19,10 +19,10 @@ export class AuthService {
 
   login(user: User) {
       return this.httpClient.post<Authentication>(this.BASE_URL + this.API_URL, user);
-  }
+    }
 
   logout() {
-      localStorage.removeItem('companyId');
+    localStorage.removeItem('companyId');
       localStorage.removeItem('userRole');
       localStorage.removeItem('customerPersonalId');
       localStorage.removeItem('token');
@@ -30,17 +30,30 @@ export class AuthService {
       // localStorage.removeItem("expires_at");
   }
 
-  // public isLoggedIn() {
-  //     return moment().isBefore(this.getExpiration());
-  // }
+  public isLoggedIn() {
+    return localStorage.getItem('token') != null && localStorage.getItem('token') != '';
+    //     return moment().isBefore(this.getExpiration());
+  }
 
   // isLoggedOut() {
-  //     return !this.isLoggedIn();
-  // }
+    //     return !this.isLoggedIn();
+    // }
 
-  // getExpiration() {
-  //     const expiration = localStorage.getItem("expires_at");
-  //     const expiresAt = JSON.parse(expiration);
-  //     return moment(expiresAt);
-  // }
+    // getExpiration() {
+      //     const expiration = localStorage.getItem("expires_at");
+      //     const expiresAt = JSON.parse(expiration);
+      //     return moment(expiresAt);
+      // }
+
+      hasRole(userRole: string) {
+        return localStorage.getItem('userRole')?.toUpperCase() == userRole.toUpperCase();
+      }
+
+      isCustomer() {
+        return this.hasRole('CUSTOMER');
+      }
+      isCompany() {
+        return this.hasRole('COMPANY');
+      }
+
 }
