@@ -10,9 +10,17 @@ import { environment } from 'src/environments/environment';
 export class CustomerService {
 
   private readonly BASE_URL = environment.baseUrl;
-  private readonly API_URL = '/api/v1/customer/sign-up';
+  private readonly API_URL = '/api/v1/customer';
 
   constructor(private httpClient: HttpClient) { }
+
+  list() {
+    return this.httpClient.get<Customer[]>(this.BASE_URL + this.API_URL);
+  }
+
+  findById(id: number) {
+    return this.httpClient.get<Customer>(this.BASE_URL + this.API_URL + '/' + id);
+  }
 
   save(record: Partial<Customer>) {
     if (record.id) {
@@ -23,11 +31,15 @@ export class CustomerService {
   }
 
   private create(record: Partial<Customer>) {
-    return this.httpClient.post<Customer>(this.BASE_URL + this.API_URL, record);
+    return this.httpClient.post<Customer>(this.BASE_URL + this.API_URL + '/sign-up', record);
   }
 
   private update(record: Partial<Customer>) {
     return this.httpClient.put<Customer>(this.BASE_URL + this.API_URL, record);
+  }
+
+  updatePassword(record: Partial<Customer>) {
+    return this.httpClient.put<Customer>(this.BASE_URL + this.API_URL + '/password', record);
   }
 
 }

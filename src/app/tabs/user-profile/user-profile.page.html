@@ -33,7 +33,7 @@
       <p>Dados pessoais</p>
     </ion-item-divider>
 
-    <form [formGroup]="userDataForm">
+    <form [formGroup]="userDataForm" *ngIf="customer">
       <ion-item>
         <ion-input label="Nome" labelPlacement="floating" required name="name" formControlName="name" type="text"></ion-input>
       </ion-item>
@@ -60,17 +60,13 @@
         </ng-container>
       </div>
 
-      <ion-item *ngIf="userDataForm.get('userType')?.value === 'company'">
-        <ion-input label="CNPJ" labelPlacement="floating" required name="cnpj" formControlName="cnpj" type="text" [maskito]="cnpjMask" [maskitoElement]="maskPredicate"></ion-input>
-      </ion-item>
-
-      <ion-item *ngIf="userDataForm.get('userType')?.value === 'customer'">
+      <ion-item>
         <ion-input label="CPF" labelPlacement="floating" required name="cpf" formControlName="cpf" type="text" [maskito]="cpfMask" [maskitoElement]="maskPredicate"></ion-input>
       </ion-item>
 
-      <ion-item *ngIf="userDataForm.get('userType')?.value === 'customer'">
-        <ion-select label="Empresa" label-placement="floating" formControlName="companyId" required>
-          <ion-select-option *ngFor="let company of userDataForm.get('companyId')?.value" [value]="company">{{ company.name }}</ion-select-option>
+      <ion-item>
+        <ion-select label="Loja" label-placement="floating" formControlName="companyId" required>
+          <ion-select-option *ngFor="let userCompany of userCompanies" [value]="userCompany">{{ userCompany.name }}</ion-select-option>
         </ion-select>
       </ion-item>
       <div class="validation-errors">
@@ -84,7 +80,47 @@
       <ion-button
         [disabled]="!userDataForm.valid"
          expand="block" color="primary" type="submit"
-         (click)="onSubmit()"
+         (click)="updateCustomer()"
+         >
+        Salvar
+      </ion-button>
+    </form>
+
+    <form [formGroup]="userDataForm" *ngIf="company">
+      <ion-item>
+        <ion-input label="Nome" labelPlacement="floating" required name="name" formControlName="name" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="E-mail" labelPlacement="floating" required name="email" formControlName="email" type="email"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.email">
+          <div class="error-message" *ngIf="userDataForm.get('email')?.hasError(validation.type) && (userDataForm.get('email')?.dirty || userDataForm.get('email')?.touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-input label="Telefone" labelPlacement="floating" required name="phone" formControlName="phone" type="tel" [maskito]="phoneMask" [maskitoElement]="maskPredicate"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.phone">
+          <div class="error-message" *ngIf="userDataForm.get('phone')?.hasError(validation.type) && (userDataForm.get('phone')?.dirty || userDataForm.get('phone')?.touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item>
+        <ion-input label="CNPJ" labelPlacement="floating" required name="cnpj" formControlName="cnpj" type="text" [maskito]="cnpjMask" [maskitoElement]="maskPredicate"></ion-input>
+      </ion-item>
+
+      <ion-button
+        [disabled]="!userDataForm.valid"
+         expand="block" color="primary" type="submit"
+         (click)="updateCompany()"
          >
         Salvar
       </ion-button>
@@ -126,11 +162,20 @@
       <ion-button
         [disabled]="!newPasswordForm.valid"
          expand="block" color="primary" type="submit"
-         (click)="onSubmit()"
+         (click)="updatePassword()"
          >
         Salvar
       </ion-button>
     </form>
+
+    <ion-toast
+      [isOpen]="isToastOpen"
+      [message]="toastMessage"
+      position="bottom"
+      [duration]="5000"
+      (didDismiss)="setToastOpen(false)"
+    ></ion-toast>
+
   </ion-content>
 
 </ion-content>

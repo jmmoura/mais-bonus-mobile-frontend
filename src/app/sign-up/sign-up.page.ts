@@ -79,7 +79,7 @@ export class SignUpPage implements OnInit {
         } else if (this.form.get('userType')?.value === 'customer') {
           this.customerService.save(this.form.value)
           .subscribe({
-            next: result => this.login(),
+            next: () => this.login(),
             error: () => {
               this.loading.dismiss();
               this.setToastOpen(true);
@@ -122,6 +122,7 @@ export class SignUpPage implements OnInit {
 
   private setSession(authResult: Authentication) {
     localStorage.setItem('userRole', authResult.role);
+    localStorage.setItem('customerId', authResult.customerId?.toString());
     localStorage.setItem('companyId', authResult.companyId.toString());
     localStorage.setItem('customerPersonalId', authResult.customerPersonalId);
     // const expiresAt = moment().add(authResult.expiresIn,'second');

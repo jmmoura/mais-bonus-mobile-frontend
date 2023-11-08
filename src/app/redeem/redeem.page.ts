@@ -59,8 +59,8 @@ export class RedeemPage implements OnInit {
   ngOnInit() {
   }
 
-  redeem() {
-    this.showLoading();
+  async redeem() {
+    await this.showLoading();
 
     const redeem: Redeem = {
       amount: this.formUtilsService.convertToNumber(this.form.get('amount')?.value),

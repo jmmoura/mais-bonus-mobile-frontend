@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { Company } from './../../model/Company';
 import { environment } from 'src/environments/environment';
+import { User } from 'src/app/model/User';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,10 @@ export class CompanyService {
 
   list() {
     return this.httpClient.get<Company[]>(this.BASE_URL + this.API_URL);
+  }
+
+  findById(id: number) {
+    return this.httpClient.get<Company>(this.BASE_URL + this.API_URL + '/' + id);
   }
 
   save(record: Partial<Company>) {
@@ -32,6 +37,10 @@ export class CompanyService {
 
   private update(record: Partial<Company>) {
     return this.httpClient.put<Company>(this.BASE_URL + this.API_URL, record);
+  }
+
+  updatePassword(record: Partial<Company>) {
+    return this.httpClient.put<Company>(this.BASE_URL + this.API_URL + '/password', record);
   }
 
 }

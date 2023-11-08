@@ -1,3 +1,4 @@
+import { async } from '@angular/core/testing';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -32,8 +33,8 @@ export class RedeemCompanyPage implements OnInit {
    ngOnInit() {
   }
 
-  redeem() {
-    this.showLoading();
+  async redeem() {
+    await this.showLoading();
 
     this.redeemService.find(this.form.get('code')?.value).subscribe({
       next: result => {
@@ -78,8 +79,8 @@ export class RedeemCompanyPage implements OnInit {
     await alert.present();
   }
 
-  saveRedeem() {
-    this.showLoading();
+  async saveRedeem() {
+    await this.showLoading();
 
     this.redeemService.withdraw(this.form.value).subscribe({
       next: () => {

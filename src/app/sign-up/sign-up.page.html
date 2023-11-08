@@ -87,7 +87,7 @@
       </div>
 
       <ion-item *ngIf="form.get('userType')?.value === 'customer'">
-        <ion-select label="Empresa" label-placement="floating" formControlName="companyId" required>
+        <ion-select label="Loja" label-placement="floating" formControlName="companyId" required>
           <ion-select-option *ngFor="let company of companies" [value]="company.id">{{ company.name }}</ion-select-option>
         </ion-select>
       </ion-item>

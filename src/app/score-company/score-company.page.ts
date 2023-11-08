@@ -65,9 +65,9 @@ export class ScoreCompanyPage implements OnInit {
 
   }
 
-  addPurchase() {
+  async addPurchase() {
 
-    this.showLoading();
+    await this.showLoading();
 
     const score: Score = {
       description: this.form.get('description')?.value,
