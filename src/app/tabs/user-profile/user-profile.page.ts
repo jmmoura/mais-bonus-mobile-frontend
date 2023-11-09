@@ -32,7 +32,7 @@ export class UserProfilePage implements OnInit, OnDestroy {
   readonly maskPredicate: MaskitoElementPredicateAsync = async (el) => (el as HTMLIonInputElement).getInputElement();
 
   userDataForm!: FormGroup;
-  newPasswordForm: FormGroup;
+  newPasswordForm!: FormGroup;
   validationMessages = this.formUtilsService.getValidationMessages();
   userType?: string;
   userCompanies?: UserCompany[];
@@ -52,28 +52,10 @@ export class UserProfilePage implements OnInit, OnDestroy {
     private loadingCtrl: LoadingController
   ) {
 
-    const companyId = Number(this.authService.getCompanyId());
-
     if (this.authService.isCompany()) {
-      this.companyService.findById(companyId).subscribe(result => {
-        this.company = result;
         this.userDataForm = this.initializeCompanyDataValidations();
-      });
-
-    } else {
-      const customerId = Number(this.authService.getCustomerId());
-      this.customerService.findById(customerId).subscribe(result => {
-        this.customer = result;
+    } else if (this.authService.isCustomer()) {
         this.userDataForm = this.initializeCustomerDataValidations();
-      });
-
-      this.companyService.findById(companyId).subscribe(result => {
-        this.userCompanies = [{
-          id: result.id,
-          name: result.name
-        }];
-        this.userDataForm.controls['companyId'].setValue(this.userCompanies[0]);
-      });
     }
 
     this.newPasswordForm = this.initializeNewPasswordValidations();
@@ -90,6 +72,37 @@ export class UserProfilePage implements OnInit, OnDestroy {
 
   ionViewDidLeave() {
     this.ngOnDestroy();
+  }
+
+  ionViewWillEnter() {
+    const companyId = Number(this.authService.getCompanyId());
+
+    if (this.authService.isCompany()) {
+      this.companyService.findById(companyId).subscribe(result => {
+        this.company = result;
+        this.customer = undefined;
+        this.userDataForm = this.initializeCompanyDataValidations();
+        this.userDataForm.updateValueAndValidity();
+      });
+
+    } else if (this.authService.isCustomer()) {
+      const customerId = Number(this.authService.getCustomerId());
+      this.customerService.findById(customerId).subscribe(result => {
+        this.customer = result;
+        this.company = undefined;
+        this.userDataForm = this.initializeCustomerDataValidations();
+      });
+
+      this.companyService.findById(companyId).subscribe(result => {
+        this.userCompanies = [{
+          id: result.id,
+          name: result.name
+        }];
+        this.userDataForm.controls['companyId'].setValue(this.userCompanies[0]);
+        this.userDataForm.updateValueAndValidity();
+      });
+    }
+
   }
 
   async updateCompany() {
