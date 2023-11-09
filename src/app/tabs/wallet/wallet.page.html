@@ -52,6 +52,13 @@
           </ion-text>
         </ion-text>
       </ion-item>
+
+      <div class="spinner" *ngIf="!statementLoaded">
+        <ion-spinner name="crescent"></ion-spinner>
+      </div>
+
     </ion-item-group>
+
   </ion-content>
+
 </ion-content>

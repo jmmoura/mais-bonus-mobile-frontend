@@ -36,3 +36,14 @@ p {
   border-bottom-style: solid;
   border-bottom-width: 1px;
 }
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ion-spinner {
+  width: 10em;
+  height: 10em;
+}

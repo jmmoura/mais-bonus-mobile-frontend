@@ -14,6 +14,7 @@ export class WalletPage implements OnInit, OnDestroy {
 
   balance: number = 0;
   statement: Score[] = [];
+  statementLoaded: boolean = false;
 
   constructor(
     private router: Router,
@@ -35,6 +36,7 @@ export class WalletPage implements OnInit, OnDestroy {
     const companyId = companyIdStr ? Number.parseInt(companyIdStr) : null;
     this.scoringService.list(companyId).subscribe(result => {
       this.statement = result.sort((a, b) => Number(new Date(b.timestamp || '')) - Number(new Date(a.timestamp || '')) );
+      this.statementLoaded = true;
       this.balance = result.reduce((acc, current) => { return acc + current.cashbackAmount }, 0)
     });
 

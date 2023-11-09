@@ -130,8 +130,23 @@
         <p>Alterar senha</p>
       </ion-item-divider>
 
-    <form [formGroup]="newPasswordForm">
-      <ion-item>
+          <ion-list *ngIf="!company && !customer">
+            <ion-item>
+              <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
+            </ion-item>
+            <ion-item>
+              <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
+            </ion-item>
+            <ion-item>
+              <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
+            </ion-item>
+            <ion-item>
+              <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
+            </ion-item>
+          </ion-list>
+
+      <form [formGroup]="newPasswordForm">
+        <ion-item>
         <ion-input label="Nova senha" labelPlacement="floating" required name="password" formControlName="password" type="password"></ion-input>
       </ion-item>
       <div class="validation-errors">
@@ -164,9 +179,9 @@
          expand="block" color="primary" type="submit"
          (click)="updatePassword()"
          >
-        Salvar
-      </ion-button>
-    </form>
+         Salvar
+        </ion-button>
+      </form>
 
     <ion-toast
       [isOpen]="isToastOpen"

@@ -24,7 +24,7 @@ interface UserCompany {
   templateUrl: 'user-profile.page.html',
   styleUrls: ['user-profile.page.scss']
 })
-export class UserProfilePage implements OnInit, OnDestroy {
+export class UserProfilePage implements OnInit {
 
   readonly cpfMask: MaskitoOptions = this.formUtilsService.getCpfMask();
   readonly cnpjMask: MaskitoOptions = this.formUtilsService.getCnpjMask();
@@ -65,15 +65,6 @@ export class UserProfilePage implements OnInit, OnDestroy {
   ngOnInit() {
   }
 
-  @HostListener('unloaded')
-  ngOnDestroy() {
-    console.log('Items destroyed');
-  }
-
-  ionViewDidLeave() {
-    this.ngOnDestroy();
-  }
-
   ionViewWillEnter() {
     const companyId = Number(this.authService.getCompanyId());
 
@@ -90,17 +81,21 @@ export class UserProfilePage implements OnInit, OnDestroy {
       this.customerService.findById(customerId).subscribe(result => {
         this.customer = result;
         this.company = undefined;
-        this.userDataForm = this.initializeCustomerDataValidations();
+
+        this.companyService.findById(companyId).subscribe(result => {
+          this.userCompanies = [{
+            id: result.id,
+            name: result.name
+          }];
+
+          this.userDataForm = this.initializeCustomerDataValidations();
+          this.userDataForm.controls['companyId'].setValue(this.userCompanies[0]);
+
+          this.userDataForm.updateValueAndValidity();
+        });
+
       });
 
-      this.companyService.findById(companyId).subscribe(result => {
-        this.userCompanies = [{
-          id: result.id,
-          name: result.name
-        }];
-        this.userDataForm.controls['companyId'].setValue(this.userCompanies[0]);
-        this.userDataForm.updateValueAndValidity();
-      });
     }
 
   }
