@@ -84,7 +84,7 @@ export class ScoreCompanyPage implements OnInit {
       },
       error: () => {
         this.loading.dismiss();
-        this.setToastOpen(true, 'Erro ao salvar pontuação');
+        this.setToastOpen(true, 'Erro ao salvar pontuação. Verifique o ID do cliente');
       }
     });
   }
